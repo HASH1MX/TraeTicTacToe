@@ -63,6 +63,52 @@ body::before {
         margin-bottom: 1rem;
         text-shadow: 0 0 10px rgba(0, 255, 242, 0.5);
     }
+
+    .scoreboard {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: rgba(26, 26, 26, 0.6);
+        border-radius: 8px;
+        border: 1px solid rgba(0, 255, 242, 0.2);
+    }
+
+    .score-item {
+        text-align: center;
+    }
+
+    .icon {
+        width: 24px;
+        height: 24px;
+        display: block;
+        margin: 0 auto 0.5rem;
+        filter: drop-shadow(0 0 8px currentColor);
+    }
+
+    .player-x {
+        color: #00fff2;
+        text-shadow: 0 0 8px rgba(0, 255, 242, 0.7);
+    }
+
+    .player-o {
+        color: #ff00d4;
+        text-shadow: 0 0 8px rgba(255, 0, 212, 0.7);
+    }
+
+    .ties {
+        color: #b4fffa;
+        text-shadow: 0 0 8px rgba(180, 255, 250, 0.7);
+    }
+
+    .score {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    }
+
+
     
     .status {
         margin-bottom: 1rem;
@@ -108,6 +154,27 @@ body::before {
     .cell.o {
         color: #ff00d4;
         text-shadow: 0 0 10px rgba(255, 0, 212, 0.7);
+    }
+
+    .winning-line {
+        position: absolute;
+        background: linear-gradient(90deg, #00fff2, #ff00d4);
+        transform-origin: left center;
+        height: 5px;
+        animation: winningLineGlow 1.5s ease-in-out infinite;
+        box-shadow: 0 0 15px rgba(0, 255, 242, 0.7);
+        z-index: 3;
+    }
+
+    @keyframes winningLineGlow {
+        0%, 100% {
+            opacity: 1;
+            box-shadow: 0 0 15px rgba(0, 255, 242, 0.7);
+        }
+        50% {
+            opacity: 0.8;
+            box-shadow: 0 0 25px rgba(0, 255, 242, 0.9), 0 0 45px rgba(255, 0, 212, 0.5);
+        }
     }
     
     #restartButton {

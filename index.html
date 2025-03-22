@@ -9,6 +9,20 @@
 <body>
     <div class="container">
         <h1>Tic Tac Toe</h1>
+        <div class="scoreboard">
+            <div class="score-item">
+                <svg class="player-x icon"><use href="icons.svg#icon-x"/></svg>
+                <span class="score" id="score-x">0</span>
+            </div>
+            <div class="score-item">
+                <svg class="ties icon"><use href="icons.svg#icon-ties"/></svg>
+                <span class="score" id="score-ties">0</span>
+            </div>
+            <div class="score-item">
+                <svg class="player-o icon"><use href="icons.svg#icon-o"/></svg>
+                <span class="score" id="score-o">0</span>
+            </div>
+        </div>
         <div class="status" id="status">Player X's turn</div>
         <div class="game-board" id="board">
             <div class="cell" data-cell></div>
