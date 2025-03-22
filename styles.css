@@ -19,6 +19,7 @@
 body {
     font-family: Arial, sans-serif;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
@@ -67,11 +68,18 @@ body::before {
     .scoreboard {
         display: flex;
         justify-content: space-around;
-        margin-bottom: 1.5rem;
-        padding: 1rem;
-        background: rgba(26, 26, 26, 0.6);
-        border-radius: 8px;
-        border: 1px solid rgba(0, 255, 242, 0.2);
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: rgba(26, 26, 26, 0.4);
+        border-radius: 12px;
+        border: 1px solid rgba(0, 255, 242, 0.3);
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
+        width: 100%;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        z-index: 2;
     }
 
     .score-item {
