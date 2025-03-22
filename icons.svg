@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="icon-x" viewBox="0 0 24 24">
+    <path d="M18 6L6 18M6 6l12 12" stroke="#00fff2" stroke-width="2" stroke-linecap="round" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-o" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="8" stroke="#ff00d4" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-ties" viewBox="0 0 24 24">
+    <path d="M12 3v18M3 12h18" stroke="#b4fffa" stroke-width="2" stroke-linecap="round" fill="none"/>
+  </symbol>
+</svg>
