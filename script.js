@@ -12,6 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const startGameButton = document.getElementById('startGameButton');
     const player1NameInput = document.getElementById('player1Name');
     const player2NameInput = document.getElementById('player2Name');
+    const healthX = document.getElementById('health-x');
+    const healthO = document.getElementById('health-o');
+    const healthXText = document.getElementById('health-x-text');
+    const healthOText = document.getElementById('health-o-text');
     let currentPlayer = 'X';
     let gameActive = true;
     let gameState = ['', '', '', '', '', '', '', '', ''];
@@ -19,6 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
         X: 0,
         O: 0,
         ties: 0
+    };
+    let health = {
+        X: 10,
+        O: 10
     };
     
     const winningConditions = [
@@ -56,6 +64,13 @@ document.addEventListener('DOMContentLoaded', () => {
         updateStatus();
     };
 
+    function updateHealthBars() {
+        healthX.style.width = `${(health.X / 10) * 100}%`;
+        healthO.style.width = `${(health.O / 10) * 100}%`;
+        healthXText.textContent = `${health.X} HP`;
+        healthOText.textContent = `${health.O} HP`;
+    }
+
     function checkWinner() {
         return winningConditions.some((condition, index) => {
             const hasWon = condition.every(index => {
@@ -92,6 +107,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 line.style.transform = `rotate(${angle}deg)`;
                 
                 board.appendChild(line);
+
+                // Reduce opponent's health
+                const opponent = currentPlayer === 'X' ? 'O' : 'X';
+                health[opponent]--;
+                updateHealthBars();
+
+                // Check if opponent's health reached 0
+                if (health[opponent] === 0) {
+                    const winnerName = currentPlayer === 'X' ? player1Name : player2Name;
+                    status.textContent = `Game Over - ${winnerName} Wins!`;
+                    gameActive = false;
+                    return true;
+                }
             }
             return hasWon;
         });
@@ -109,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         status.textContent = `${currentPlayerName}'s turn`;
     }
 
-    function restartGame() {
+    function nextRound() {
         currentPlayer = 'X';
         gameActive = true;
         gameState = ['', '', '', '', '', '', '', '', ''];
@@ -121,6 +149,26 @@ document.addEventListener('DOMContentLoaded', () => {
         if (existingLine) {
             existingLine.remove();
         }
+        updateStatus();
+    }
+
+    function restartGame() {
+        currentPlayer = 'X';
+        gameActive = true;
+        gameState = ['', '', '', '', '', '', '', '', ''];
+        health = {
+            X: 10,
+            O: 10
+        };
+        cells.forEach(cell => {
+            cell.textContent = '';
+            cell.classList.remove('x', 'o');
+        });
+        const existingLine = document.querySelector('.winning-line');
+        if (existingLine) {
+            existingLine.remove();
+        }
+        updateHealthBars();
         updateStatus();
     }
 
@@ -140,4 +188,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cells.forEach((cell, index) => cell.addEventListener('click', () => handleClick(index)));
     restartButton.addEventListener('click', restartGame);
+    nextRoundButton.addEventListener('click', nextRound);
 });

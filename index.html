@@ -21,6 +21,16 @@
             <button id="startGameButton">Start Game</button>
         </div>
     </div>
+    <div class="health-bars">
+        <div class="health-bar">
+            <div class="health-points" id="health-x"></div>
+            <div class="health-text" id="health-x-text">10 HP</div>
+        </div>
+        <div class="health-bar">
+            <div class="health-points" id="health-o"></div>
+            <div class="health-text" id="health-o-text">10 HP</div>
+        </div>
+    </div>
     <div class="scoreboard">
         <div class="score-item">
             <span class="player-name" id="player-x-name"></span>
@@ -52,7 +62,12 @@
             <div class="cell" data-cell></div>
             <div class="cell" data-cell></div>
         </div>
-        <button id="restartButton">Restart Game</button>
+        <div class="button-container">
+            <button id="restartButton">Restart Game</button>
+            <button id="nextRoundButton" class="small-button" aria-label="Next Round">
+                <svg class="icon"><use href="icons.svg#icon-next-round"/></svg>
+            </button>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
