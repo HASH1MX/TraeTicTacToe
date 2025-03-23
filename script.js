@@ -6,6 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreX = document.getElementById('score-x');
     const scoreO = document.getElementById('score-o');
     const scoreTies = document.getElementById('score-ties');
+    const playerXName = document.getElementById('player-x-name');
+    const playerOName = document.getElementById('player-o-name');
+    const playerNameModal = document.getElementById('playerNameModal');
+    const startGameButton = document.getElementById('startGameButton');
+    const player1NameInput = document.getElementById('player1Name');
+    const player2NameInput = document.getElementById('player2Name');
     let currentPlayer = 'X';
     let gameActive = true;
     let gameState = ['', '', '', '', '', '', '', '', ''];
@@ -31,7 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (checkWinner()) {
             gameActive = false;
-            status.textContent = `Player ${currentPlayer} wins!`;
+            const winnerName = currentPlayer === 'X' ? player1Name : player2Name;
+            status.textContent = `${winnerName} wins!`;
             scores[currentPlayer]++;
             updateScoreboard();
             return;
@@ -46,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        status.textContent = `Player ${currentPlayer}'s turn`;
+        updateStatus();
     };
 
     function checkWinner() {
@@ -55,7 +62,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 return gameState[index] === currentPlayer;
             });
             if (hasWon) {
-                drawWinningLine(index, condition);
+                const line = document.createElement('div');
+                line.className = 'winning-line';
+                const board = document.getElementById('board');
+                const cells = document.querySelectorAll('.cell');
+                const startCell = cells[condition[0]].getBoundingClientRect();
+                const endCell = cells[condition[2]].getBoundingClientRect();
+                const boardRect = board.getBoundingClientRect();
+                
+                const startX = startCell.left + (startCell.width / 2) - boardRect.left;
+                const startY = startCell.top + (startCell.height / 2) - boardRect.top;
+                const endX = endCell.left + (endCell.width / 2) - boardRect.left;
+                const endY = endCell.top + (endCell.height / 2) - boardRect.top;
+                
+                line.style.position = 'absolute';
+                line.style.zIndex = '1';
+                
+                const length = Math.sqrt(
+                    Math.pow(endX - startX, 2) +
+                    Math.pow(endY - startY, 2)
+                );
+                
+                const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+                
+                line.style.width = `${length}px`;
+                line.style.left = `${startX}px`;
+                line.style.top = `${startY}px`;
+                line.style.transformOrigin = 'left';
+                line.style.transform = `rotate(${angle}deg)`;
+                
+                board.appendChild(line);
             }
             return hasWon;
         });
@@ -65,11 +101,18 @@ document.addEventListener('DOMContentLoaded', () => {
         return gameState.every(cell => cell !== '');
     };
 
+    let player1Name = '';
+    let player2Name = '';
+
+    function updateStatus() {
+        const currentPlayerName = currentPlayer === 'X' ? player1Name : player2Name;
+        status.textContent = `${currentPlayerName}'s turn`;
+    }
+
     function restartGame() {
         currentPlayer = 'X';
         gameActive = true;
         gameState = ['', '', '', '', '', '', '', '', ''];
-        status.textContent = `Player ${currentPlayer}'s turn`;
         cells.forEach(cell => {
             cell.textContent = '';
             cell.classList.remove('x', 'o');
@@ -78,57 +121,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (existingLine) {
             existingLine.remove();
         }
-    };
+        updateStatus();
+    }
 
-    function drawWinningLine(index, condition) {
-        const existingLine = document.querySelector('.winning-line');
-        if (existingLine) {
-            existingLine.remove();
+    startGameButton.addEventListener('click', () => {
+        const p1Name = player1NameInput.value.trim();
+        const p2Name = player2NameInput.value.trim();
+        
+        if (p1Name && p2Name) {
+            player1Name = p1Name;
+            player2Name = p2Name;
+            playerNameModal.style.display = 'none';
+            playerXName.textContent = player1Name;
+            playerOName.textContent = player2Name;
+            updateStatus();
         }
-
-        const line = document.createElement('div');
-        line.classList.add('winning-line');
-
-        board.style.position = 'relative';
-        const cell1 = cells[condition[0]];
-        const cell2 = cells[condition[2]];
-        const cell1Rect = cell1.getBoundingClientRect();
-        const cell2Rect = cell2.getBoundingClientRect();
-        const boardRect = board.getBoundingClientRect();
-
-        const startX = cell1Rect.left - boardRect.left + cell1Rect.width / 2;
-        const startY = cell1Rect.top - boardRect.top + cell1Rect.height / 2;
-        const endX = cell2Rect.left - boardRect.left + cell2Rect.width / 2;
-        const endY = cell2Rect.top - boardRect.top + cell2Rect.height / 2;
-
-        const length = Math.sqrt(
-            Math.pow(endX - startX, 2) +
-            Math.pow(endY - startY, 2)
-        );
-
-        const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
-
-        line.style.position = 'absolute';
-        line.style.width = `${length}px`;
-        line.style.left = `${startX}px`;
-        line.style.top = `${startY}px`;
-        line.style.transform = `rotate(${angle}deg)`;
-        line.style.transformOrigin = '0 50%';
-        line.style.zIndex = '10';
-        line.style.pointerEvents = 'none';
-        line.style.height = '3px';
-
-
-
-
-        board.appendChild(line);
-    }
-
-    function updateScoreboard() {
-        scoreX.textContent = scores.X;
-        scoreO.textContent = scores.O;
-        scoreTies.textContent = scores.ties;
-    }
+    });
 
     cells.forEach((cell, index) => cell.addEventListener('click', () => handleClick(index)));
     restartButton.addEventListener('click', restartGame);

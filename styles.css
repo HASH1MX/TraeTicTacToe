@@ -84,6 +84,45 @@ body::before {
 
     .score-item {
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        align-items: center;
+    }
+
+    .player-name {
+        font-weight: bold;
+        margin-bottom: 0.2rem;
+    }
+
+    #player-x-name {
+        color: #00fff2;
+        text-shadow: 0 0 8px rgba(0, 255, 242, 0.7),
+                   0 0 20px rgba(0, 255, 242, 0.5),
+                   0 0 30px rgba(0, 255, 242, 0.3);
+        animation: neonGlowX 1.5s ease-in-out infinite;
+    }
+
+    #player-o-name {
+        color: #ff00d4;
+        text-shadow: 0 0 8px rgba(255, 0, 212, 0.7),
+                   0 0 20px rgba(255, 0, 212, 0.5),
+                   0 0 30px rgba(255, 0, 212, 0.3);
+        animation: neonGlowO 1.5s ease-in-out infinite;
+    }
+
+    @keyframes neonGlowX {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.8; text-shadow: 0 0 10px rgba(0, 255, 242, 0.9),
+                                      0 0 25px rgba(0, 255, 242, 0.7),
+                                      0 0 35px rgba(0, 255, 242, 0.5); }
+    }
+
+    @keyframes neonGlowO {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.8; text-shadow: 0 0 10px rgba(255, 0, 212, 0.9),
+                                      0 0 25px rgba(255, 0, 212, 0.7),
+                                      0 0 35px rgba(255, 0, 212, 0.5); }
     }
 
     .icon {
@@ -105,8 +144,11 @@ body::before {
     }
 
     .ties {
-        color: #b4fffa;
-        text-shadow: 0 0 8px rgba(180, 255, 250, 0.7);
+        color: #00fff2;
+        text-shadow: 0 0 8px rgba(0, 255, 242, 0.7),
+                   0 0 20px rgba(0, 255, 242, 0.5),
+                   0 0 30px rgba(0, 255, 242, 0.3);
+        animation: neonGlowX 1.5s ease-in-out infinite;
     }
 
     .score {
@@ -168,10 +210,10 @@ body::before {
         position: absolute;
         background: linear-gradient(90deg, #00fff2, #ff00d4);
         transform-origin: left center;
-        height: 5px;
+        height: 8px;
+        z-index: 10;
         animation: winningLineGlow 1.5s ease-in-out infinite;
         box-shadow: 0 0 15px rgba(0, 255, 242, 0.7);
-        z-index: 3;
     }
 
     @keyframes winningLineGlow {
@@ -201,9 +243,259 @@ body::before {
     }
     
     #restartButton:hover {
-        background-color: #00fff2;
-        color: #1a1a1a;
+        background-color: rgba(61, 61, 61, 0.8);
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.5), inset 0 0 10px rgba(0, 255, 242, 0.3);
+        transform: scale(1.05);
+    }
+
+    .modal {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(8px);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        display: none;
+    }
+
+    .modal-content {
+        background: rgba(45, 45, 45, 0.9);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.4),
+                    inset 0 0 15px rgba(255, 0, 212, 0.2);
+        border: 1px solid rgba(0, 255, 242, 0.3);
+        max-width: 400px;
+        width: 90%;
+    }
+
+    .modal h2 {
+        color: #00fff2;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 10px rgba(0, 255, 242, 0.5);
+    }
+
+    .input-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .input-group label {
+        display: block;
+        color: #b4fffa;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 5px rgba(180, 255, 250, 0.3);
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 0.8rem;
+        background: rgba(26, 26, 26, 0.6);
+        border: 2px solid rgba(0, 255, 242, 0.3);
+        border-radius: 5px;
+        color: #fff;
+        font-size: 1rem;
+        transition: all 0.3s;
+    }
+
+    .input-group input:focus {
+        outline: none;
+        border-color: #00fff2;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    }
+
+    #startGameButton {
+        width: 100%;
+        padding: 1rem;
+        background: rgba(45, 45, 45, 0.6);
+        color: #00fff2;
+        border: 2px solid #00fff2;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        text-shadow: 0 0 8px rgba(0, 255, 242, 0.7);
+    }
+
+    #startGameButton:hover {
+        background: rgba(0, 255, 242, 0.2);
         box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    }
+
+    .modal[style*="display: none"] ~ .container {
+        display: block;
+    }
+    
+    @media (max-width: 400px) {
+        .container {
+            padding: 1rem;
+        }
+        
+        .game-board {
+            max-width: 250px;
+        }
+        
+        .cell {
+            font-size: 1.5rem;
+        }
+    }
+.score-item .player-name {
+    font-weight: bold;
+    margin-bottom: 0.2rem;
+}
+
+.score-item:nth-child(2) .player-name {
+    color: #00fff2;
+    text-shadow: 0 0 8px rgba(0, 255, 242, 0.7),
+               0 0 20px rgba(0, 255, 242, 0.5),
+               0 0 30px rgba(0, 255, 242, 0.3);
+    animation: neonGlowX 1.5s ease-in-out infinite;
+}
+    }
+    .cell.x {
+        color: #00fff2;
+        text-shadow: 0 0 10px rgba(0, 255, 242, 0.7);
+    }
+    
+    .cell.o {
+        color: #ff00d4;
+        text-shadow: 0 0 10px rgba(255, 0, 212, 0.7);
+    }
+
+    .winning-line {
+        position: absolute;
+        background: linear-gradient(90deg, #00fff2, #ff00d4);
+        transform-origin: left center;
+        height: 8px;
+        z-index: 10;
+        animation: winningLineGlow 1.5s ease-in-out infinite;
+        box-shadow: 0 0 15px rgba(0, 255, 242, 0.7);
+    }
+
+    @keyframes winningLineGlow {
+        0%, 100% {
+            opacity: 1;
+            box-shadow: 0 0 15px rgba(0, 255, 242, 0.7);
+        }
+        50% {
+            opacity: 0.8;
+            box-shadow: 0 0 25px rgba(0, 255, 242, 0.9), 0 0 45px rgba(255, 0, 212, 0.5);
+        }
+    }
+    
+    #restartButton {
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        background-color: rgba(45, 45, 45, 0.6);
+        color: #00fff2;
+        border: 2px solid #00fff2;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-shadow: 0 0 8px rgba(0, 255, 242, 0.7);
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3), inset 0 0 5px rgba(0, 255, 242, 0.2);
+        backdrop-filter: blur(5px);
+    }
+    
+    #restartButton:hover {
+        background-color: rgba(61, 61, 61, 0.8);
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.5), inset 0 0 10px rgba(0, 255, 242, 0.3);
+        transform: scale(1.05);
+    }
+
+    .modal {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(8px);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        display: none;
+    }
+
+    .modal-content {
+        background: rgba(45, 45, 45, 0.9);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.4),
+                    inset 0 0 15px rgba(255, 0, 212, 0.2);
+        border: 1px solid rgba(0, 255, 242, 0.3);
+        max-width: 400px;
+        width: 90%;
+    }
+
+    .modal h2 {
+        color: #00fff2;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 10px rgba(0, 255, 242, 0.5);
+    }
+
+    .input-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .input-group label {
+        display: block;
+        color: #b4fffa;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 5px rgba(180, 255, 250, 0.3);
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 0.8rem;
+        background: rgba(26, 26, 26, 0.6);
+        border: 2px solid rgba(0, 255, 242, 0.3);
+        border-radius: 5px;
+        color: #fff;
+        font-size: 1rem;
+        transition: all 0.3s;
+    }
+
+    .input-group input:focus {
+        outline: none;
+        border-color: #00fff2;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    }
+
+    #startGameButton {
+        width: 100%;
+        padding: 1rem;
+        background: rgba(45, 45, 45, 0.6);
+        color: #00fff2;
+        border: 2px solid #00fff2;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        text-shadow: 0 0 8px rgba(0, 255, 242, 0.7);
+    }
+
+    #startGameButton:hover {
+        background: rgba(0, 255, 242, 0.2);
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    }
+
+    .modal[style*="display: none"] ~ .container {
+        display: block;
     }
     
     @media (max-width: 400px) {
